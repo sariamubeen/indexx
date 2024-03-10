@@ -1,12 +1,22 @@
-stages:
-  - deploy
+name: Deploy to Server
 
-deploy:
-  stage: deploy
-  script:
-    - cd /home/azure/indexx && git pull origin main
-    - cp -r /home/azure/indexx/. /var/www/html/
-    - sudo systemctl reload nginx
-  runs-on: self-hosted
-  only:
-    - main
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Copy files to server
+        run: |
+          cp -r ${{ github.workspace }}/. /var/www/html/
+
+      - name: Reload Nginx
+        run: |
+          sudo systemctl reload nginx
