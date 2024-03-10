@@ -1,4 +1,4 @@
-name: Staging
+name: Staging Deployment
 
 on:
   push:
@@ -6,17 +6,19 @@ on:
       - master
 
 jobs:
-  deploy_staging:
-    name: Deploy staging
+  deploy_production:
+    name: Deploy to Staging
     runs-on: self-hosted
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Deployments
-        run: |
-          sudo mkdir -p /var/www/html  # Ensure directory exists
-          sudo rsync -av $GITHUB_WORKSPACE/ azure@172.171.228.11:/var/www/html/
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.PRIVATE_SSH_KEY_STAGE }}
+      - name: Deploy to production
+        uses: appleboy/ssh-action@master
+        with:
+          host: 172.171.228.11
+          username: azure
+          key: ${{ secrets.PRIVATE_SSH_KEY_STAGE }}
+          script: |
+            sudo rsync -av $GITHUB_WORKSPACE/ /var/www/html/
