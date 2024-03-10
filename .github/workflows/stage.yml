@@ -16,4 +16,4 @@ jobs:
 
       - name: Deployments
         run: |
-          rsync -av $GITHUB_WORKSPACE/ /var/www/html/
+          sudo rsync -av $GITHUB_WORKSPACE/ /var/www/html/
