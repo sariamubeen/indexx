@@ -4,8 +4,8 @@ stages:
 deploy:
   stage: deploy
   script:
-    - cd /home/azure/cvtesting && git pull origin main
-    - cp -r /home/azure/cvtesting/. /var/www/html/
+    - cd /home/azure/index && git pull origin main
+    - cp -r /home/azure/index/. /var/www/html/
     - sudo systemctl reload nginx
   tags:
     - runner1
